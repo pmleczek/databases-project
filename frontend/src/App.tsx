@@ -3,7 +3,7 @@ import { createContext, type ReactNode, useContext, useState } from "react";
 
 const Router = () => {
   const authContext = useContext(LoginContext);
-  const isAuthenticated = !!authContext.token;
+  const isAuthenticated = !!authContext?.token;
   return isAuthenticated ? <div /> : <LoginScreen />;
 };
 
