@@ -13,8 +13,20 @@ generator prismabox {
   typeboxImportVariableName = "t"
   inputModel = true
   output   = "../generated/prismabox"
-} 
+}
+
+model Event {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(128)
+  registrations Registration[]
+  @@map("events")
+}
 
 model Registration {
   id Int @id @default(autoincrement())
+  username String @db.VarChar(64)
+  eventId Int
+  event Event @relation(fields: [eventId], references: [id])
+  @@unique([username, eventId])
+  @@map("registrations")
 }

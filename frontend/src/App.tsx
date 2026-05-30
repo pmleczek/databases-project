@@ -1,10 +1,11 @@
-import { LoginScreen } from "@/screens";
-import { createContext, type ReactNode, useContext, useState } from "react";
+import { EventScreen, LoginScreen } from "@/screens";
+import { LoginContext, LoginContextProvider } from "@/context";
+import { useContext } from "react";
 
 const Router = () => {
   const authContext = useContext(LoginContext);
   const isAuthenticated = !!authContext?.token;
-  return isAuthenticated ? <div /> : <LoginScreen />;
+  return isAuthenticated ? <EventScreen /> : <LoginScreen />;
 };
 
 const App = () => {
@@ -13,16 +14,6 @@ const App = () => {
       <Router />
     </LoginContextProvider>
   );
-};
-
-const LoginContext = createContext<{
-  token: string | null;
-  setToken: (token: string) => void;
-} | null>(null);
-
-const LoginContextProvider = ({ children }: { children?: ReactNode }) => {
-  const [token, setToken] = useState<string | null>(null);
-  return <LoginContext.Provider value={{ token, setToken }}>{children}</LoginContext.Provider>;
 };
 
 export default App;

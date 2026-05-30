@@ -6,4 +6,7 @@ export default {
   datasource: {
     url: DATABASE_URL,
   },
+  migrations: {
+    seed: "bun prisma/seed.ts",
+  },
 } satisfies PrismaConfig;

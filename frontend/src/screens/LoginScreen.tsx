@@ -1,13 +1,17 @@
 import { ArrowRight } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldDescription } from "@/components/ui/field";
+import { LoginContext } from "@/context";
 
 const LoginScreen = () => {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
+
+  // @ts-expect-error -- No context verification
+  const { setToken } = useContext(LoginContext);
 
   const handleSubmit = useCallback(async () => {
     setError("");
@@ -17,8 +21,24 @@ const LoginScreen = () => {
       return;
     }
 
-    console.log("Logging in...");
-  }, [password]);
+    const result = await fetch("/api/sign-in", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        password,
+      }),
+    });
+
+    if (!result.ok) {
+      setError("Niepoprawne hasło");
+      setPassword("");
+    }
+
+    const { token } = await result.json();
+    setToken(token);
+  }, [password, setToken]);
 
   return (
     <div className="h-screen flex items-center justify-center">

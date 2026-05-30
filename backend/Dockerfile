@@ -30,4 +30,4 @@ COPY --from=build-frontend /frontend/dist ./public
 
 EXPOSE 3000
 
-CMD sh -c "bunx prisma migrate deploy && bun src/index.ts"
+CMD sh -c "bunx prisma db push && bunx prisma db seed && bun src/index.ts"
